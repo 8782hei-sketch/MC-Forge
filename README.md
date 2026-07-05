@@ -1,74 +1,96 @@
-# Minecraft Forge Server — Auto Installer
+# Minecraft Forge Server Installer
 
-Installer gaya "pilih dan selesai" (seperti Aternos) untuk server **Minecraft Forge**,
-support dari **Minecraft 1.1 sampai versi terbaru** — mengambil data langsung dari
-server resmi Forge (`maven.minecraftforge.net`), jadi otomatis update kalau ada versi baru.
+Bosan dengan setup Minecraft server yang ribet? Ini tool untuk kamu.
 
-## Isi paket
+Cukup jalankan satu script, jawab beberapa pertanyaan, dan server siap jalan. Gaya Aternos, tapi lokal. Support Minecraft dari versi 1.1 sampai yang terbaru sekarang. Semua versi Forge yang ada otomatis bisa dipilih.
 
-```
-mc-installer/
-├── linux-termux/
-│   └── install.sh      ← untuk Linux & Termux (Android)
-├── windows/
-│   ├── install.bat      ← double-click ini di Windows
-│   └── install.ps1      ← logic utama (dipanggil otomatis oleh install.bat)
-└── README.md
-```
+Kerjanya begini: kamu pilih versi Minecraft, pilih build Forge yang mau, terus script handle sisanya. Mulai dari download Java yang tepat, instalasi Forge, sampe bikin file konfigurasi. Nggak perlu tahu detail teknis.
 
-## Cara pakai
+## Yang ada di sini
 
-### Linux / Termux
+Pilih sesuai device kamu:
+
+- **Linux & Termux (Android)**: gunakan `install.sh`
+- **Windows**: gunakan `install.bat`
+
+Simpel kok. Cuma dua file untuk masing-masing platform.
+
+## Gimana caranya?
+
+### Windows
+Gampang banget. Cari `install.bat`, klik dua kali. Trus ikuti pertanyaan yang muncul.
+
+Kalau Windows bilang "Windows Defender SmartScreen", jangan takut. Ini cuma warning standard untuk aplikasi dari internet. Klik "More info" terus "Run anyway". Script ini nggak ada yang bersifat berbahaya kok.
+
+### Linux atau Termux
+Buka terminal, jalankan:
+
 ```bash
 chmod +x install.sh
 ./install.sh
 ```
-Di Termux, jalankan persis sama. Pastikan sudah `pkg update` sebelumnya kalau baru install Termux.
 
-### Windows
-Cukup **double-click `install.bat`**. Kalau muncul peringatan SmartScreen,
-klik "More info" → "Run anyway" (script ini tidak butuh admin/koneksi berbahaya,
-cuma download resmi dari Forge & Adoptium).
+Di Termux, cara yang sama. Pastikan paket sudah update terlebih dahulu dengan `pkg update` kalau baru kali install Termux.
 
-## Apa yang otomatis dan apa yang bisa kamu atur
+## Yang auto-setting vs yang bisa kamu atur
 
-**Otomatis (tidak perlu mikir):**
-- Versi OpenJDK yang cocok dipilih otomatis sesuai versi Minecraft:
-  - Minecraft < 1.17 → Java 8
-  - Minecraft 1.17 → Java 16
-  - Minecraft 1.18 – 1.20.4 → Java 17
-  - Minecraft ≥ 1.20.5 → Java 21
-- JDK diunduh **portable & terisolasi di dalam folder server** (Linux/Windows) — tidak mengubah Java sistem, jadi aman kalau kamu punya beberapa server dengan versi berbeda.
-- Daftar versi Forge + rekomendasi build diambil live dari Forge, bukan hardcode — otomatis mendukung versi terbaru begitu Forge merilisnya.
+**Script akan otomatis tentuin:**
 
-**Kamu tinggal pilih:**
-- Versi Minecraft (ketik `list` untuk lihat semua yang didukung)
-- Build Forge: `recommended` (paling stabil, disarankan), `latest` (paling baru), atau nomor build manual
+Java. Script cek versi Minecraft yang kamu pilih, terus download Java yang cocok:
+- Minecraft 1.16 dan lebih lama → Java 8
+- Minecraft 1.17 → Java 16
+- Minecraft 1.18 sampai 1.20.4 → Java 17
+- Minecraft 1.20.5 dan lebih baru → Java 21
 
-**Opsional, kalau mau di-setting-setting:**
-- Port server, difficulty, gamemode, MOTD, max players, whitelist
-- Alokasi RAM minimum/maksimum
+Jadi nggak perlu kamu cari-cari Java versi berapa. Selain itu, Java-nya di-install khusus buat server itu aja, gak ikutan ubah Java di sistem kamu. Artinya kalau punya beberapa server dengan versi Minecraft beda-beda, nggak berisiko conflict.
 
-Kalau di-skip, semua pakai default yang wajar (port 25565, difficulty easy, RAM 1024–2048MB).
+Daftar versi Forge. Script ambil langsung dari Forge official. Jadi kalo ada versi Forge baru, otomatis bisa dipilih di sini tanpa perlu update script.
 
-## Catatan penting
+**Kamu yang pilih:**
 
-- **EULA**: script akan minta persetujuan EULA Mojang secara eksplisit — ini wajib secara hukum, jadi tidak di-auto-accept diam-diam.
-- **Termux & versi lawas**: Termux hanya menyediakan paket OpenJDK yang relatif baru. Untuk Minecraft versi lama (butuh Java 8), server mungkin tidak berjalan mulus di Termux — untuk kasus ini lebih disarankan pakai VPS/Linux biasa.
-- **Minecraft sangat lawas (sebelum ±1.5.2)**: dulu Forge belum punya format "installer.jar", jadi kalau download installer gagal untuk versi sangat lama, script akan memberi tahu dan kamu perlu instal manual untuk versi tersebut (Forge di era itu didistribusikan sebagai file "universal").
-- Semua unduhan berasal dari sumber resmi: `maven.minecraftforge.net`, `files.minecraftforge.net`, dan `api.adoptium.net` (Eclipse Temurin/OpenJDK resmi).
+Versi Minecraft berapa. Script bakal show semua versi yang available. Kalo bingung, ketik `list` untuk lihat lengkap.
 
-## Menjalankan server setelah instalasi
+Build Forge mana. Bisa pilih `recommended` (paling stabil, biasanya pilihan terbaik), `latest` (paling fresh, tapi kemungkinan masih ada bug), atau ketik nomor build specific kalau tahu.
 
+**Boleh di-setting kalau kepingin lebih custom:**
+
+Port server, difficulty, game mode, MOTD (pesan di server list), jumlah pemain max, whitelist on/off, dan berapa MB RAM yang dialokasiin buat server.
+
+Semua ini optional. Kalau di-skip, script pakai setting default yang reasonable (port 25565, difficulty easy, RAM 1 sampai 2 GB).
+
+## Hal-hal yang perlu kamu tau
+
+**Soal EULA.** Minecraft punya peraturan (EULA) yang wajib disetujui buat jalanin server. Script akan minta persetujuan eksplisit dari kamu. Bukan di-accept otomatis diam-diam, karena itu gak sah.
+
+**Minecraft versi lama di Termux.** Kalau pengen buat Minecraft 1.12 atau lebih lama di Termux, mungkin bakal berisiko. Termux punya keterbatasan paket Java yang available. Untuk versi super lama, VPS atau Linux biasa lebih aman.
+
+**Minecraft super duper lama (pre-1.5.2).** Jaman itu Forge belum pakai format installer yang standard. Kalau script gagal unduh installer untuk versi super lawas, script bakal bilang dan kamu perlu instal manual. Tapi ini sangat jarang terjadi, soalnya hampir nggak ada yang pakai Minecraft setua itu lagi.
+
+**Source-nya terpercaya.** Semua file yang di-download berasal dari official source: Forge, Minecraft, sama Adoptium (yang maintain OpenJDK resmi). Jadi aman.
+
+## Setelah instalasi selesai
+
+Folder `mc-server` (atau nama yang kamu buat) udah siap. Buat jalanin server:
+
+**Linux & Termux:**
 ```bash
-# Linux/Termux
 cd mc-server
 ./start-server.sh
 ```
-```bat
-:: Windows
+
+**Windows:**
+```batch
 cd mc-server
 start-server.bat
 ```
 
-Untuk mematikan server, ketik `stop` di console lalu Enter.
+Server akan start. Console bakal muncul dengan info loading. Ketika udah selesai loading (lihat log sampai nggak ada error), server kamu live.
+
+Mau stop server? Ketik `stop` di console terus Enter. Server akan shutdown dengan proper.
+
+## Helpful tips
+
+- Pertama kali server start, akan ada beberapa file baru yang auto-generated (world data, config, dll). Ini normal.
+- Kalau ada error pas startup, lihat log message. Biasanya error message cukup jelas buat troubleshoot.
+- Di Termux, kalau khawatir HP auto-sleep, jalankan `termux-wake-lock` sebelum start server. Ini keep device tetap active.
+- Khusus Termux juga: gunakan VPN atau pastikan port sudah forward kalau mau teman outside network bisa connect. Termux di HP personal nggak bisa di-access dari internet langsung.
